@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - jwt-pizza
   workflow_dispatch:
 
 jobs:

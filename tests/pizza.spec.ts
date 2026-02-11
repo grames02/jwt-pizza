@@ -5,7 +5,8 @@ import { User, Role } from '../src/service/pizzaService';
 async function basicInit(page: Page) {
   let loggedInUser: User | undefined;
   const validUsers: Record<string, User> = { 'd@jwt.com': { id: '3', name: 'Kai Chen', email: 'd@jwt.com', password: 'a', roles: [{ role: Role.Diner }] } };
-
+    validUsers.added = { id: '4', name: 'Admin', email: 'a@jwt.com', password: 'admin', roles: [{ role: Role.Admin }] };
+    validUsers.franchisee = { id: '5', name: 'franchisee', email: 'f@jwt.com', password: 'franchisee', roles: [{ role: Role.Franchisee }] };
   // Authorize login for the given user
   await page.route('*/**/api/auth', async (route) => {
     const loginReq = route.request().postDataJSON();

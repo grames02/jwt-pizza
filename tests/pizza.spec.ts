@@ -240,7 +240,7 @@ test('Diner, view store page', async ({ page }) => {
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
-    await page.getByRole('textbox', { name: 'Password' }).fill('diner');
+    await page.getByRole('textbox', { name: 'Password' }).fill('a');
     await page.getByRole('button', { name: 'Login' }).click();
 });
 
@@ -281,7 +281,6 @@ test('Admin, close franchise', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).click();
     await page.getByRole('textbox', { name: 'Password' }).fill('admin');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.reload();
     await page.getByLabel('Global').getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('row', { name: 'LotaPizza' }).getByRole('button').click();
 });
@@ -325,4 +324,10 @@ test('logout', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: 'Order' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
+});
+
+test('View Docs Page', async ({ page }) => {
+  await basicInit(page);
+  await page.goto('/docs');
+  await expect(page.locator('main')).toBeVisible();
 });

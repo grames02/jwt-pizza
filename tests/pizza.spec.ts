@@ -286,5 +286,8 @@ test('Another Admin Test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Password' }).click();
   await page.getByRole('textbox', { name: 'Password' }).fill('admin');
   await page.getByRole('button', { name: 'Login' }).click();
+  await page.screenshot({ path: 'jws-pizza/after-login.png' });
   await page.getByRole('link', { name: 'Admin' }).click();
+  await page.screenshot({ path: 'jws-pizza/after-login-admin.png' });
+
 });

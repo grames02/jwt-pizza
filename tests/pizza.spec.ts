@@ -257,7 +257,11 @@ test('Admin, close store', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).click();
     await page.getByRole('textbox', { name: 'Password' }).fill('admin');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.getByLabel('Global').getByRole('link', { name: 'Admin' }).click();
+
+    const adminLink = page.getByLabel('Global').getByRole('link', { name: 'Admin' });
+    await adminLink.waitFor({state: 'visible'});
+    await adminLink.click();
+    
     await page.getByRole('row', { name: 'Test123 0 ₿ Close' }).getByRole('button').click();
 });
 

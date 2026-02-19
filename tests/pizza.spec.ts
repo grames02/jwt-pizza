@@ -130,7 +130,7 @@ test('purchase with login', async ({ page }) => {
 });
 
 test('Register', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).click();
   await page.getByRole('main').getByText('Register').click();
@@ -144,22 +144,22 @@ test('Register', async ({ page }) => {
 });
 
 test('View Franchises as Non-LoggedIn User', async ({ page }) => {
-await page.goto('http://localhost:5173/');
+await page.goto('/');
 await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
 });
 
 test('View About Page as Non-LoggedIn User', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'About' }).click();
 });
 
 test('View History Page as Non-LoggedIn User', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'History' }).click();
 });
 
 test('Register as New User and Logout', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Register' }).click();
     await page.getByRole('textbox', { name: 'Full name' }).click();
     await page.getByRole('textbox', { name: 'Full name' }).fill('yoda');
@@ -173,7 +173,7 @@ test('Register as New User and Logout', async ({ page }) => {
 
 
 test('Login as Franchisee and view stores.', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
@@ -183,7 +183,7 @@ test('Login as Franchisee and view stores.', async ({ page }) => {
 
 
 test('View Admin Page', async ({ page }) => {
-await page.goto('http://localhost:5173/');
+await page.goto('/');
 await page.getByRole('link', { name: 'Login' }).click();
 await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
 await page.getByRole('textbox', { name: 'Password' }).click();
@@ -194,7 +194,7 @@ await page.getByRole('link', { name: 'Logout' }).click();
 });
 
 test('Admin, view franchise page', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
@@ -204,7 +204,7 @@ test('Admin, view franchise page', async ({ page }) => {
 });
     
 test('Diner, view store page', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
@@ -213,7 +213,7 @@ test('Diner, view store page', async ({ page }) => {
 });
 
 test('Admin, create new franchise', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
@@ -229,7 +229,7 @@ test('Admin, create new franchise', async ({ page }) => {
 });
 
 test('Franchisee create and close store', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
@@ -240,7 +240,7 @@ test('Franchisee create and close store', async ({ page }) => {
 });
 
 test('Admin, close franchise', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
@@ -251,7 +251,7 @@ test('Admin, close franchise', async ({ page }) => {
 });
 
 test('Admin, close store', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();
@@ -262,7 +262,7 @@ test('Admin, close store', async ({ page }) => {
 });
 
 test('Login, and logout.', async ({ page }) => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
     await page.getByRole('textbox', { name: 'Password' }).click();

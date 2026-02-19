@@ -9,6 +9,7 @@ async function basicInit(page: Page) {
      'a@jwt.com': { id: '4', name: 'Admin', email: 'a@jwt.com', password: 'admin', roles: [{ role: Role.Admin }] },
     'f@jwt.com': { id: '5', name: 'franchisee', email: 'f@jwt.com', password: 'franchisee', roles: [{ role: Role.Franchisee }] },
   };
+  
   // Authorize login for the given user
   await page.route('*/**/api/auth', async (route) => {
     const loginReq = route.request().postDataJSON();
@@ -26,6 +27,7 @@ async function basicInit(page: Page) {
     await route.fulfill({ json: loginRes });
   });
 
+  
   // Return the currently logged in user
   await page.route('*/**/api/user/me', async (route) => {
     expect(route.request().method()).toBe('GET');
@@ -280,6 +282,7 @@ test('Franchisee create and close store', async ({ page }) => {
 
 
 test('Another Admin Test', async ({ page }) => {
+  await basicInit(page);
   await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');

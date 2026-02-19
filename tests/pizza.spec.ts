@@ -246,6 +246,7 @@ test('Admin, close franchise', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).click();
     await page.getByRole('textbox', { name: 'Password' }).fill('admin');
     await page.getByRole('button', { name: 'Login' }).click();
+    await page.reload();
     await page.getByLabel('Global').getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('row', { name: 'New Franchise pizza' }).getByRole('button').click();
 });

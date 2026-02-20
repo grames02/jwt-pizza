@@ -121,6 +121,14 @@ class HttpPizzaService implements PizzaService {
     }
     return this.callEndpoint(`/api/docs`);
   }
+
+  async listUsers(page: number, limit: number, filter: string): Promise<{ users: User[]; more: boolean }> {
+    return this.callEndpoint(`/api/user?page=${page}&limit=${limit}&filter=${filter}`);
+  }
+
+  async deleteUser(userId: number): Promise<void> {
+    return this.callEndpoint(`/api/user/${userId}`, 'DELETE');
+  }
 }
 
 const httpPizzaService = new HttpPizzaService();

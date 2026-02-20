@@ -95,6 +95,8 @@ type JWTPayload = {
 };
 
 interface PizzaService {
+  listUsers(arg0: number, arg1: number, filter: string): unknown;
+  deleteUser(userId: number): unknown;
   updateUser(user: User): Promise<User>;
   login(email: string, password: string): Promise<User>;
   register(email: string, password: string, role: string): Promise<User>;

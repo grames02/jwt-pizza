@@ -8,6 +8,8 @@ test('updateUser', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Email address' }).fill(email);
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('button', { name: 'Register' }).click();
+    await expect(page.getByRole('link', { name: 'pd' })).toBeVisible();
+
     await page.getByRole('link', { name: 'pd' }).click();
     await expect(page.getByRole('main')).toContainText('pizza diner');
 
@@ -35,6 +37,7 @@ test('updateEmail', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Email address' }).fill(email);
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('button', { name: 'Register' }).click();
+    await expect(page.getByRole('link', { name: 'pd' })).toBeVisible();
     await page.getByRole('link', { name: 'pd' }).click();
     await expect(page.getByRole('main')).toContainText('pizza diner');
 
@@ -62,6 +65,7 @@ test('updatePassword', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Email address' }).fill(email);
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('button', { name: 'Register' }).click();
+    await expect(page.getByRole('link', { name: 'pd' })).toBeVisible();
     await page.getByRole('link', { name: 'pd' }).click();
     await expect(page.getByRole('main')).toContainText('pizza diner');
 

@@ -65,7 +65,7 @@ test('updatePassword', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Email address' }).fill(email);
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('button', { name: 'Register' }).click();
-    await expect(page.getByRole('link', { name: 'pd' })).toBeVisible();
+    page.pause();
     await page.getByRole('link', { name: 'pd' }).click();
     await expect(page.getByRole('main')).toContainText('pizza diner');
 

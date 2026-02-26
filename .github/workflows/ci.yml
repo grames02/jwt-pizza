@@ -1,59 +1,57 @@
-name: CI Pipeline
+# name: CI Pipeline
 
-on:
-  push:
-    branches:
-      - jwt-pizza
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
 
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+# jobs:
+#   build:
+#     name: Build & Test
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
+#       - name: Setup Node
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '22.x'
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Build
-        run: |
-          npm run build
-          cp dist/index.html dist/404.html
+#       - name: Build
+#         run: |
+#           npm run build
+#           cp dist/index.html dist/404.html
 
-      # - name: Install Playwright browsers
-      #   run: npx playwright install --with-deps chromium
+#       - name: Install Playwright browsers
+#         run: npx playwright install --with-deps chromium
 
-      # - name: Run tests
-      #   run: npm run test:coverage
+#       - name: Run tests
+#         run: npm run test:coverage
 
-      # I just wanna test something.
+#       - name: Update coverage badge
+#         run: |
+#           coverage=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+#           color=$(echo "$coverage < 80" | bc | awk '{if ($1) print "red"; else print "green"}')
+#           curl -s -X POST "https://pizza-factory.cs329.click/api/badge/${{ secrets.NET_ID }}/jwtpizzacoverage?label=Coverage&value=$coverage%25&color=$color" -H "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"
 
-      # - name: Update coverage badge
-      #   run: |
-      #     coverage=$(jq '.total.lines.pct' coverage/coverage-summary.json)
-      #     color=$(echo "$coverage < 80" | bc | awk '{if ($1) print "red"; else print "green"}')
-      #     curl -s -X POST "https://pizza-factory.cs329.click/api/badge/${{ secrets.NET_ID }}/jwtpizzacoverage?label=Coverage&value=$coverage%25&color=$color" -H "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     permissions:
+#       pages: write
+#       id-token: write
+#     environment:
+#       name: github-pages
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
-        with:
-          path: dist/
+#       - name: Deploy to GitHub Pages
+#         uses: actions/deploy-pages@v4
+#         with:
+#           path: dist/

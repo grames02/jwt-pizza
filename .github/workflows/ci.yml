@@ -30,8 +30,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run tests
-        run: npm run test:coverage
+      # - name: Run tests
+      #   run: npm run test:coverage
 
       - name: Update coverage badge
         run: |

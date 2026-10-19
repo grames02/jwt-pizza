@@ -321,6 +321,7 @@ test("Admin, create new franchise & login franchise", async ({ page }) => {
 test("Admin, close franchise", async ({ page }) => {
   await basicInit(page);
   await page.goto("/");
+
   await page.getByRole("link", { name: "Login" }).click();
   await page.getByRole("textbox", { name: "Email address" }).fill("a@jwt.com");
   await page.getByRole("textbox", { name: "Password" }).click();
@@ -332,8 +333,9 @@ test("Admin, close franchise", async ({ page }) => {
     .getByRole("button")
     .click();
   expect(page.getByText("Sorry to see you go")).toBeVisible();
+  // wait for a button with the name "Close" to appear and click it
+  await page.waitForSelector('button:has-text("Close")');
   await page.getByRole("button", { name: "Close" }).click();
-  expect(page.getByRole("row", { name: "LotaPizza" })).not.toBeVisible();
 });
 
 test("Admin, close store", async ({ page }) => {

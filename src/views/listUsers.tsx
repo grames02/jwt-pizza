@@ -94,6 +94,9 @@ export default function ListUsers() {
                     <th scope="col" className="p-3 text-left">
                       Role
                     </th>
+                    <th scope="col" className="p-3 text-left">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

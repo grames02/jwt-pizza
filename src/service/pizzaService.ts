@@ -98,6 +98,11 @@ type JWTPayload = {
   payload: string;
 };
 
+type UserList = {
+  users: User[];
+  more: boolean;
+};
+
 interface PizzaService {
   login(email: string, password: string): Promise<User>;
   register(email: string, password: string, role: string): Promise<User>;
@@ -119,6 +124,8 @@ interface PizzaService {
   createStore(franchise: Franchise, store: Store): Promise<Store>;
   closeStore(franchise: Franchise, store: Store): Promise<null>;
   docs(docType: string): Promise<Endpoints>;
+  getUsers(page: number, limit: number, nameFilter: string): Promise<UserList>;
+  deleteUser(userId: string): Promise<void>;
 }
 
 export {
@@ -137,4 +144,5 @@ export {
   Endpoints,
   OrderResponse,
   JWTPayload,
+  UserList,
 };

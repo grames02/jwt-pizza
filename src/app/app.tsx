@@ -25,6 +25,7 @@ import Breadcrumb from "../components/breadcrumb";
 import { pizzaService } from "../service/service";
 import { Role, User } from "../service/pizzaService";
 import "preline/preline";
+import ListUsers from "../views/listUsers";
 
 declare global {
   interface Window {
@@ -149,6 +150,13 @@ export default function App() {
       title: "Diner",
       to: "/diner-dashboard",
       component: <DinerDashboard user={user} setUser={setUser} />,
+      display: [],
+    },
+    {
+      title: "User List",
+      to: "/admin-dashboard/list-users",
+      component: <ListUsers />,
+      constraints: [isAdmin],
       display: [],
     },
   ];

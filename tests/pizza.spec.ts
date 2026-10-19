@@ -108,6 +108,44 @@ async function basicInit(page: Page) {
       { id: 4, name: "topSpot", stores: [] },
     ],
   };
+  await page.route(/\/api\/user\?.*/, async (route) => {
+    expect(route.request().method()).toBe("GET");
+
+    const url = new URL(route.request().url());
+    const requestedPage = Number(url.searchParams.get("page"));
+    const name = url.searchParams.get("name") ?? "*";
+
+    const users: User[] = [
+      {
+        id: "3",
+        name: "pizza diner",
+        email: "d@jwt.com",
+        roles: [{ role: Role.Diner }],
+      },
+      {
+        id: "4",
+        name: "常用名字",
+        email: "a@jwt.com",
+        roles: [{ role: Role.Admin }],
+      },
+    ];
+
+    const filteredUsers = users.filter((user) => {
+      const search = name.replace(/\*/g, "").toLowerCase();
+      return (user.name ?? "").toLowerCase().includes(search);
+    });
+
+    const pageSize = 1;
+    const start = Math.max(0, requestedPage - 1) * pageSize;
+    const result = filteredUsers.slice(start, start + pageSize);
+
+    await route.fulfill({
+      json: {
+        users: result,
+        more: start + pageSize < filteredUsers.length,
+      },
+    });
+  });
   await page.route(/\/api\/franchise.*/, async (route) => {
     const method = route.request().method();
     const url = route.request().url();
@@ -378,4 +416,129 @@ test("View Docs Page", async ({ page }) => {
   await basicInit(page);
   await page.goto("/docs");
   await expect(page.locator("main")).toBeVisible();
+});
+
+test("Admin, list users", async ({ page }) => {
+  await basicInit(page);
+  await page.getByRole("link", { name: "Login" }).click();
+  await page.getByRole("textbox", { name: "Email address" }).fill("a@jwt.com");
+  await page.getByRole("textbox", { name: "Password" }).click();
+  await page.getByRole("textbox", { name: "Password" }).fill("admin");
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("link", { name: "Admin" }).click();
+
+  await page.getByRole("button", { name: /list users/i }).click();
+
+  await expect(page.getByRole("heading", { name: /users/i })).toBeVisible();
+});
+
+test("Admin can list users", async ({ page }) => {
+  await basicInit(page);
+
+  await page.getByRole("link", { name: "Login" }).click();
+  await page.getByRole("textbox", { name: "Email address" }).fill("a@jwt.com");
+  await page.getByRole("textbox", { name: "Password" }).fill("admin");
+  await page.getByRole("button", { name: "Login" }).click();
+
+  await page.getByRole("link", { name: "Admin", exact: true }).click();
+  await page.getByRole("button", { name: "List Users" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "User Management" }),
+  ).toBeVisible();
+  await expect(page.getByRole("table")).toContainText("pizza diner");
+  await expect(page.getByRole("table")).toContainText("d@jwt.com");
+  await expect(page.getByRole("table")).toContainText("diner");
+});
+
+test("Admin can filter users by name", async ({ page }) => {
+  await basicInit(page);
+  await page.getByRole("link", { name: "Login" }).click();
+  await page.getByRole("textbox", { name: "Email address" }).fill("a@jwt.com");
+  await page.getByRole("textbox", { name: "Password" }).fill("admin");
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("link", { name: "Admin", exact: true }).click();
+  await page.getByRole("button", { name: "List Users" }).click();
+
+  await page
+    .getByRole("textbox", { name: "Filter by name" })
+    .fill("pizza diner");
+  await page.getByRole("button", { name: "Search" }).click();
+
+  await expect(page.getByRole("table")).toContainText("pizza diner");
+  await expect(page.getByRole("table")).not.toContainText("常用名字");
+});
+
+test("Admin can delete a user", async ({ page }) => {
+  let users = [
+    {
+      id: "3",
+
+      name: "pizza diner",
+      email: "d@jwt.com",
+      roles: [{ role: Role.Diner }],
+    },
+    {
+      id: "4",
+      name: "常用名字",
+      email: "a@jwt.com",
+      roles: [{ role: Role.Admin }],
+    },
+  ];
+
+  await page.route(/\/api\/user\?.*/, async (route) => {
+    const url = new URL(route.request().url());
+    const pageNumber = Number(url.searchParams.get("page") ?? "1");
+    const limit = Number(url.searchParams.get("limit") ?? "10");
+    const name = url.searchParams.get("name") ?? "*";
+    const search = name.replace(/\*/g, "").toLowerCase();
+
+    const filtered = users.filter((user) =>
+      user.name.toLowerCase().includes(search),
+    );
+    const start = (pageNumber - 1) * limit;
+
+    await route.fulfill({
+      json: {
+        users: filtered.slice(start, start + limit),
+        more: start + limit < filtered.length,
+      },
+    });
+  });
+
+  await page.route(/\/api\/user\/4$/, async (route) => {
+    if (route.request().method() !== "DELETE") {
+      await route.continue();
+      return;
+    }
+
+    users = users.filter((user) => user.id !== "4");
+    await route.fulfill({ status: 200, json: {} });
+  });
+
+  // Use the same working login/navigation sequence as
+  // your "Admin can list users" test.
+  await basicInit(page);
+  await page.getByRole("link", { name: "Login" }).click();
+  await page.getByRole("textbox", { name: "Email address" }).fill("a@jwt.com");
+  await page.getByRole("textbox", { name: "Password" }).fill("admin");
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("link", { name: "Admin", exact: true }).click();
+  await page.getByRole("button", { name: "List Users" }).click();
+
+  // Go to the page containing the target user.
+  await page.getByRole("button", { name: "Next" }).click();
+  await expect(page.getByRole("table")).toContainText("常用名字");
+
+  // This should fail until the Delete UI is implemented.
+  const userRow = page.getByRole("row").filter({ hasText: "常用名字" });
+  await userRow.getByRole("button", { name: "Delete" }).click();
+
+  // If the app asks for confirmation, confirm it here.
+  const confirmButton = page.getByRole("button", { name: "Confirm delete" });
+  if (await confirmButton.isVisible().catch(() => false)) {
+    await confirmButton.click();
+  }
+
+  await expect(page.getByRole("table")).not.toContainText("常用名字");
 });

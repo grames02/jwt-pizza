@@ -1,4 +1,6 @@
 import { test, expect } from "playwright-test-coverage";
+import app from "../src/app/app";
+import { request } from "@playwright/test";
 
 test("updateUser", async ({ page }) => {
   const email = `user${Math.floor(Math.random() * 10000)}@jwt.com`;

@@ -239,6 +239,8 @@ test("View about Page as LoggedIn User", async ({ page }) => {
   await page.getByRole("textbox", { name: "Password" }).fill("a");
   await page.getByRole("button", { name: "Login" }).click();
   await page.getByRole("link", { name: "About" }).click();
+  await expect(page.getByText("The secret sauce")).toBeVisible();
+  await expect(page.getByRole("main")).toBeVisible();
 });
 
 test("View History Page as Non-LoggedIn User", async ({ page }) => {
@@ -255,6 +257,7 @@ test("View History Page as LoggedIn User", async ({ page }) => {
   await page.getByRole("textbox", { name: "Password" }).fill("a");
   await page.getByRole("button", { name: "Login" }).click();
   await page.getByRole("link", { name: "History" }).click();
+  await expect(page.getByRole("main")).toContainText("history");
 });
 
 test("not found page", async ({ page }) => {

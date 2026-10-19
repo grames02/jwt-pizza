@@ -44,6 +44,8 @@ test("updateUser with password change", async ({ page }) => {
   await page.getByRole("textbox", { name: "Email address" }).fill(email);
   await page.getByRole("textbox", { name: "Password" }).fill("diner");
   await page.getByRole("button", { name: "Register" }).click();
+  // wait for a link with the name "pd" to appear and click it
+  await page.waitForSelector('a:has-text("pd")');
 
   await page.getByRole("link", { name: "pd" }).click();
 

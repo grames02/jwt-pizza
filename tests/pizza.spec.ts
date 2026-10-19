@@ -322,7 +322,7 @@ test("Admin, close franchise", async ({ page }) => {
   await page.getByRole("button", { name: "Login" }).click();
   await page.getByLabel("Global").getByRole("link", { name: "Admin" }).click();
   await page
-    .getByRole("row", { name: "LotaPizza" })
+    .getByRole("row", { name: "LotaPizza Close" })
     .getByRole("button")
     .click();
   await page.getByRole("button", { name: "Close" }).click();

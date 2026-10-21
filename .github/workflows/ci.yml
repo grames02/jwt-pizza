@@ -54,7 +54,7 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
-    enviornment: production
+    environment: production
     env:
       version: ${{needs.build.outputs.version}}
     steps:

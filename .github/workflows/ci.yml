@@ -9,7 +9,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    envionment: production
     outputs:
       version: ${{ steps.set_version.outputs.version }}
     steps:
@@ -55,6 +54,7 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    enviornment: production
     env:
       version: ${{needs.build.outputs.version}}
     steps:
